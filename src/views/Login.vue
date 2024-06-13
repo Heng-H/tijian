@@ -52,9 +52,9 @@ const login = () => {
         return;
     }
     axios({
-        method: "get",
+        method: "post",
         url: "/api/users/login",
-        params: {
+        data: {
             userId: users.userId,
             password: users.password
         }
