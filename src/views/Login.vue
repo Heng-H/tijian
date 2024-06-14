@@ -39,7 +39,7 @@ const router = useRouter();
 
 const users = reactive({
     userId:"",
-    password:"",,,
+    password:"",!!!!
 });
 
 const login = () => {

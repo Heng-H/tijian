@@ -182,8 +182,17 @@
 </template>
 
 <script setup>
-import Footer from '../components/Footer.vue'
+import Footer from '../components/Footer.vue';
+import { reactive, toRefs,ref } from "vue";
+import { useRouter } from "vue-router";
+import { setSessionStorage } from "../common.js";
+import axios from "axios";
 
+const toAppiontment = () => {
+    router.push({
+        path: "/appiontment",
+    });
+};
 
 
 
