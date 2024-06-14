@@ -3,14 +3,14 @@
      <div class="wrapper">
         <header>
             <i class="fa fa-angle-left" onclick="history.go(-1)">
-                
+
             </i>
             <p>请您选择体检机构</p>
             <div></div>
         </header>
         <div class="top-ban"></div>
         <ul class="hospital ">
-            <li v-for="hospital in hospitalList" :index="key">
+            <li v-for="hospital in hospitalList" :ikeyndex="key">
                 <h3 @click="toSeal(hospital.hpid)">
                     {{ hospital.name }}
                     <i class="fa fa-angle-right"></i>
