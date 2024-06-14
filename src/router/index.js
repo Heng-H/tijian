@@ -4,7 +4,7 @@ import Register from '../views/Register.vue'
 import index from '../views/Index.vue'
 import appiontment from '../views/Appiontment.vue'
 import hospital from '../views/Hospital.vue'
-
+import setmeal from '../views/SetMeal.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -32,6 +32,11 @@ const router = createRouter({
       path: '/hospital',
       name: 'hospital',
       component: hospital
+    },
+    {
+      path: '/setmeal',
+      name: 'setmeal',
+      component: setmeal
     }
 
   ]
