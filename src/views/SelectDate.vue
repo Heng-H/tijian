@@ -39,30 +39,12 @@
         </div>
 
         <div class="bottom-ban"></div>
-        <footer>
-            <ul>
-                <li onclick="location.href='index.html'">
-                    <i class="fa fa-home"></i>
-                    <p>云医院</p>
-                </li>
-                <li>
-                    <i class="fa fa-opencart"></i>
-                    <p>商城</p>
-                </li>
-                <li>
-                    <i class="fa fa-compass"></i>
-                    <p>发现</p>
-                </li>
-                <li onclick="location.href='personal.html'">
-                    <i class="fa fa-user"></i>
-                    <p>我</p>
-                </li>
-            </ul>
-        </footer>
+        <Footer></Footer>
     </div>
 </template>
 
 <script setup>
+import Footer from '../components/Footer.vue';
 import {ref, reactive} from 'vue';
 import { onMounted } from 'vue';
 

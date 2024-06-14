@@ -191,7 +191,7 @@ import axios from "axios";
 const router = useRouter();
 
 const toAppiontment = () => {
-    router.push("/appiontment")
+    router.push("/appointment")
 };
 
 
@@ -199,7 +199,7 @@ const toAppiontment = () => {
 </script>
 
 <style scoped>
-@import url('https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css');
+
 /*********************** 总容器 ***********************/
 .wrapper{
     width: 100%;
