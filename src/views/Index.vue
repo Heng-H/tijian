@@ -188,10 +188,10 @@ import { useRouter } from "vue-router";
 import { setSessionStorage } from "../common.js";
 import axios from "axios";
 
+const router = useRouter();
+
 const toAppiontment = () => {
-    router.push({
-        path: "/appiontment",
-    });
+    router.push("/appiontment")
 };
 
 
