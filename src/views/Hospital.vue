@@ -3,7 +3,7 @@
      <div class="wrapper">
         <header>
             <i class="fa fa-angle-left" onclick="history.go(-1)">
-                
+
             </i>
             <p>请您选择体检机构</p>
             <div></div>

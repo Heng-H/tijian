@@ -9,17 +9,17 @@
                 </li>
                 <li>
                     <i class="fa fa-opencart"></i>
-            
+                    <Shop/>
                     <p>商城</p>
                 </li>
                 <li>
                     <i class="fa fa-compass"></i>
-        
+                    <Discovery/>
                     <p>发现</p>
                 </li>
                 <li onclick="location.href='personal.html'">
                     <i class="fa fa-user"></i>
-            
+                    <Me/>
                     <p>我</p>
                 </li>
             </ul>
