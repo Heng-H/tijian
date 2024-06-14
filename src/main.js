@@ -6,6 +6,8 @@ import router from './router'
 
 import axios from 'axios'
 
+import 'font-awesome/css/font-awesome.min.css';
+
 const app = createApp(App)
 
 app.use(router)

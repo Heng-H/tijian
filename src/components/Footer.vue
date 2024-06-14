@@ -4,18 +4,22 @@
             <ul>
                 <li onclick="location.href='index.html'">
                     <i class="fa fa-home"></i>
+            
                     <p>云医院</p>
                 </li>
                 <li>
                     <i class="fa fa-opencart"></i>
+                    <Shop/>
                     <p>商城</p>
                 </li>
                 <li>
                     <i class="fa fa-compass"></i>
+                    <Discovery/>
                     <p>发现</p>
                 </li>
                 <li onclick="location.href='personal.html'">
                     <i class="fa fa-user"></i>
+                    <Me/>
                     <p>我</p>
                 </li>
             </ul>
@@ -23,11 +27,6 @@
 </template>
 
 <script setup>
-    import Shop from './icons/Shop.vue'
-    import Hospital from './icons/Hospital.vue'
-    import Discovery from './icons/Discovery.vue'
-    import Me from './icons/Me.vue'
-
     
 </script>
 

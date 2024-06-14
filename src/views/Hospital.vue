@@ -65,13 +65,13 @@ import axios from "axios";
 const router = useRouter();
 const hospitalList = ref([
     {
-        hpid: 1,
-        name: "沈阳熙康云医院-浑南",
+        hpid: "",
+        name: "",
         picture:"",
-        telephone:"4006297568",
-        address:"文体路7号世贸商都（五里河茶城）四楼西区",
-        businessHours:"周一至周五 7:30-15:30 （周六截止12:00）",
-        deadline:"10:30",
+        telephone:"",
+        address:"",
+        businessHours:"",
+        deadline:"",
         rule:"",
     }
 ]);
