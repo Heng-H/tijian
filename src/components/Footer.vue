@@ -4,27 +4,39 @@
             <ul>
                 <li onclick="location.href='index.html'">
                     <i class="fa fa-home"></i>
+                        <Hospital/>
                     <p>云医院</p>
                 </li>
                 <li>
                     <i class="fa fa-opencart"></i>
+                    <Shop/>
                     <p>商城</p>
                 </li>
                 <li>
                     <i class="fa fa-compass"></i>
+                    <Discovery/>
                     <p>发现</p>
                 </li>
                 <li onclick="location.href='personal.html'">
                     <i class="fa fa-user"></i>
+                    <Me/>
                     <p>我</p>
                 </li>
             </ul>
         </footer>
 </template>
 
-<script></script>
+<script setup>
+    import Shop from './icons/Shop.vue'
+    import Hospital from './icons/Hospital.vue'
+    import Discovery from './icons/Discovery.vue'
+    import Me from './icons/Me.vue'
+
+    
+</script>
 
 <style scoped>
+@import url('https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css');
 /*********************** footer ***********************/
 footer{
     width: 100%;
