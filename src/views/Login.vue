@@ -38,8 +38,10 @@ import axios from "axios";
 const router = useRouter();
 ,,
 const users = reactive({
+
     userId:""。
     password:""
+
 });
 
 const login = () => {
