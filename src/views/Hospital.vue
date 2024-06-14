@@ -11,7 +11,7 @@
         <div class="top-ban"></div>
         <ul class="hospital ">
             <li v-for="hospital in hospitalList" :index="key">
-                <h3 @click="toSeal(hospital.hpid)">
+                <h3 @click="toSeal(hospital)">
                     {{ hospital.name }}
                     <i class="fa fa-angle-right"></i>
                 </h3>
@@ -76,9 +76,9 @@ const hospitalList = ref([
     }
 ]);
 
-const toSeal = () => {
+const toSeal = (hospital) => {
     //alert("请联系客服进行预约");
-    setSessionStorage("hpid", hospitalList.hpid);
+    setSessionStorage("hospital", hospital);
     router.push('/setmeal');
 };
 
@@ -91,7 +91,7 @@ const init = () => {
         if (res.data.code === 1) {
             hospitalList.value = res.data.data;
         }else{
-            console.log(res.data.message);
+            alert(res.data.message);
         }
     }
     ).catch((err) => {
