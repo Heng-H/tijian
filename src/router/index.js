@@ -2,10 +2,15 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import index from '../views/Index.vue'
-import appiontment from '../views/Appiontment.vue'
+import appointment from '../views/Appointment.vue'
 import hospital from '../views/Hospital.vue'
 import setmeal from '../views/SetMeal.vue'
-import selectDate from '../views/SelectDate.vue'
+import selectdate from '../views/SelectDate.vue'
+import confirmorder from '../views/ConfirmOrder.vue'
+import appointmentsuccess from '../views/AppointmentSuccess.vue'
+import appointmentlist from '../views/AppointmentList.vue'
+import appointmentcancel from '../views/AppointmentCancel.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -25,9 +30,9 @@ const router = createRouter({
       component: index
     },
     {
-      path: '/appiontment',
-      name: 'appiontment',
-      component: appiontment
+      path: '/appointment',
+      name: 'appointment',
+      component: appointment
     },
     {
       path: '/hospital',
@@ -40,9 +45,29 @@ const router = createRouter({
       component: setmeal
     },
     {
-      path:'/selectDate',
-      name:'selectDate',
-      component:selectDate
+      path: '/selectdate',
+      name: 'selectdate',
+      component: selectdate
+    },
+    {
+      path: '/confirmorder',
+      name: 'confirmorder',
+      component: confirmorder
+    },
+    {
+      path: '/appointmentsuccess',
+      name: 'appointmentsuccess',
+      component: appointmentsuccess
+    },
+    {
+      path: '/appointmentlist',
+      name: 'appointmentlist',
+      component: appointmentlist
+    },
+    {
+      path: '/appointmentcancel',
+      name: 'appointmentcancel',
+      component: appointmentcancel
     }
 
   ]

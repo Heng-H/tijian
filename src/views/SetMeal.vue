@@ -11,7 +11,7 @@
         <ul class="setmeal">
             <li v-for="(meal,index) in set_meal" :key="index">
                 <div class="item">
-                    <div class="item-left" @click="selectdate">  
+                    <div class="item-left" @click="selectdate(index)">  
 
                         <!-- <h3 v-if="sexMeal==0">女士套餐</h3>
                         <h3 v-else>男士套餐</h3> -->
@@ -66,8 +66,7 @@ const set_meal = ref(
                 meaning: ""
             },
         ]
-    }
-],
+    }],
 )
 
 
@@ -99,7 +98,8 @@ const init = () => {
 
 init();
 
-const selectdate = () => {
+const selectdate = (index) => {
+    setSessionStorage("setMeal", set_meal.value[index]);
     router.push('/selectdate');
 }
 
