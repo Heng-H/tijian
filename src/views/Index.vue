@@ -69,7 +69,7 @@
 <!-- 我的健康报告 -->
 <div class="report">
     <div class="item-title">
-        <p>我的健康报告</p>
+        <p @click="toOrders">我的订单报告</p>
     </div>
     <div class="report-content">
         <p>随时随地查看体检报告</p>
@@ -192,6 +192,10 @@ const router = useRouter();
 
 const toAppiontment = () => {
     router.push("/appointment")
+};
+
+const toOrders = () => {
+    router.push("/appointmentlist")
 };
 
 

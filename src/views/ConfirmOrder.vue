@@ -107,6 +107,7 @@ const order = reactive({
 });
 
 const appointmentsuccess = () => {
+    console.log(order.orderDate);
     axios({
         method:"post",
         url: "/api/orders/createOrder",
