@@ -9,12 +9,12 @@
         <div class="top-ban"></div>
 
         <ul>
-            <li v-for="order in appointmentList" :key="index">
+            <li v-for="(order, index) in appointmentList" :key="index">
                 <div class="left">
                     <p>{{order.orderDate}} {{order.hospital.name}}</p>
                     <p>{{order.setMeal.name}}</p>
                 </div>
-                <div class="right" @click="toAppointmentcancel(index)">
+                <div class="right" @click="toAppiontmentcancel(index)">
                     取消预约
                 </div>
                 <!-- <div class="left">
@@ -45,10 +45,10 @@ const appointmentList=ref([
 
 const router = useRouter();
 
-const toAppiontmentcancel = () => {
+const toAppiontmentcancel = (index) => {
     axios({
-        method:post,
-        url:"/api/cancelAppointment",
+        method: "get" ,
+        url:"/api/orders/cancelOrder/"+appointmentList.value[index].orderId,
         
     })
     .then(res => {

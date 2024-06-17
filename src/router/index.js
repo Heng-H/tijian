@@ -57,7 +57,7 @@ const router = createRouter({
     {
       path: '/appointmentsuccess',
       name: 'appointmentsuccess',
-      component: AppointmentSuccess
+      component: AppointMentSuccess
     },
     {
       path: '/appointmentlist',
