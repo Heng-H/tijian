@@ -10,6 +10,7 @@ import ConfirmOrder from '../views/ConfirmOrder.vue'
 import AppointMentSuccess from '../views/AppointmentSuccess.vue'
 import AppointmentList from '../views/AppointmentList.vue'
 import AppointmentCancel from '../views/AppointmentCancel.vue'
+import Order from '../views/Order.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +69,11 @@ const router = createRouter({
       path: '/appointmentcancel',
       name: 'appointmentcancel',
       component: AppointmentCancel
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: Order
     }
 
   ]

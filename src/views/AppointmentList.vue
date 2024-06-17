@@ -12,7 +12,7 @@
             <li v-for="(order, index) in appointmentList" :key="index">
                 <div class="left">
                     <p>{{order.orderDate}} {{order.hospital.name}}</p>
-                    <p>{{order.setMeal.name}}</p>
+                    <p @click="toAppiontment(index)">{{order.setMeal.name}}</p>
                 </div>
                 <div class="right" @click="toAppiontmentcancel(index)">
                     取消预约
@@ -54,6 +54,11 @@ const toAppiontmentcancel = (index) => {
     .then(res => {
     })
     router.push("/appointmentcancel")
+};
+
+const toAppiontment = (index) => {
+    setSessionStorage("order",appointmentList.value[index])
+    router.push("/order")
 };
 
 
