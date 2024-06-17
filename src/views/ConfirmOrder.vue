@@ -35,7 +35,7 @@
             </div>
             <table>
                 <tr>
-                    <td>2021年11月28日</td>
+                    <td>{{ selectedDate }}</td>
                 </tr>
             </table>
             <div class="title">
@@ -97,10 +97,10 @@ const hospital = getSessionStorage("hospital");
 
 const setMeal = getSessionStorage("setMeal");
 
-const orderDate = getSessionStorage("orderDate");
+const selectedDate = getSessionStorage("selectedDate");
 
 const order = reactive({
-    orderDate: "2024-06-14",
+    orderDate: selectedDate,
     hpId: hospital.hpId,
     smId: setMeal.smId,
     userId: users.userId,

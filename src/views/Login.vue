@@ -61,8 +61,8 @@ const login = () => {
         }
     })
     .then(res => {
-        let users = res.data.data; 
         if (res.data.code==1) {
+            let users = res.data.data;
             setSessionStorage("users", users);
             alert("登录成功");
             router.push("/index");

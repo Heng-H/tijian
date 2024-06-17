@@ -9,20 +9,22 @@
         <div class="top-ban"></div>
 
         <ul>
-            <li>
+            <li v-for="order in appointmentList" :key="index">
                 <div class="left">
+                    <p>{{order.orderDate}} {{order.hospital.name}}</p>
+                    <p>{{order.setMeal.name}}</p>
+                </div>
+                <div class="right" @click="toAppointmentcancel(index)">
+                    取消预约
+                </div>
+                <!-- <div class="left">
                     <p>2022-03-22</p>
                     <p>普通男士客户-基础套餐</p>
                 </div>
                 <div class="right" @click="toAppointmentcancel">
                     取消预约
-                </div>
-            </li>
-            <li>
-                <div class="left">
-                    <p>2021-11-22</p>
-                    <p>普通男士客户-脑血管系统</p>
-                </div>
+                </div> -->
+
             </li>
         </ul>
         
@@ -38,6 +40,9 @@ import { useRouter } from "vue-router";
 import { setSessionStorage,getSessionStorage} from "../common.js";
 import axios from "axios";
 
+const appointmentList=ref([
+]);
+
 const router = useRouter();
 
 const toAppiontmentcancel = () => {
@@ -51,6 +56,29 @@ const toAppiontmentcancel = () => {
     router.push("/appointmentcancel")
 };
 
+
+const init=()=>{
+    axios({
+        method:"post",
+        url:"/api/orders/checkOrder",
+        data:{
+            userId:getSessionStorage('users').userId
+        }
+    })
+    .then(res => {
+        if(res.data.code == 1){
+            appointmentList.value=res.data.data;
+            setSessionStorage("appointmentList",appointmentList);
+        }
+        else{
+            alert(res.data.message);
+        }
+    })
+    .catch(err => {
+        alert(err);
+    });
+}
+init();
 
 </script>
 

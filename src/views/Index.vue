@@ -191,7 +191,7 @@ import axios from "axios";
 const router = useRouter();
 
 const toAppiontment = () => {
-    router.push("/appiontment")
+    router.push("/appointment")
 };
 
 

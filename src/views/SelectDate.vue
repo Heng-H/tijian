@@ -9,29 +9,44 @@
         <div class="top-ban"></div>
 
         <section>
-        <div class="date-box">
-            <i class="fa fa-caret-left" @click="prevMonth"></i>
-            <p>{{ currentYear }}年{{ currentMonth + 1 }}月</p>
-            <i class="fa fa-caret-right" @click="nextMonth"></i>
-        </div>
-        <table>
-            <tr>
-                <th>日</th>
-                <th>一</th>
-                <th>二</th>
-                <th>三</th>
-                <th>四</th>
-                <th>五</th>
-                <th>六</th>
-            </tr>
-        </table>
-        <ul>
-            <li v-for="(day, index) in calendarDays" :key="index">
-                <p :class="{ 'fontcolor': day.isCurrentMonth, 'pselect': day.isToday }">{{ day.date }}</p>
-                <p v-if="day.isCurrentMonth">余{{ day.slots }}</p>
-            </li>
-        </ul>
-    </section>
+            <div class="date-box">
+                <i class="fa fa-caret-left" @click="prevMonth"></i>
+                <p>{{ currentYear }}年{{ currentMonth + 1 }}月</p>
+                <i class="fa fa-caret-right" @click="nextMonth"></i>
+            </div>
+            <table>
+                <tr>
+                    <th>日</th>
+                    <th>一</th>
+                    <th>二</th>
+                    <th>三</th>
+                    <th>四</th>
+                    <th>五</th>
+                    <th>六</th>
+                </tr>
+            </table>
+            <ul>
+                <li v-for="(calendar, index) in state.calendarArr" :key="calendar.ymd">
+                    <p :class="{
+                        fontcolor: calendar.remainder != null && calendar.remainder != 0,
+                        pselect: calendar.selectDay == 1,
+                    }" @click="selectDay(index)">
+                        {{ calendar.day }}
+                    </p>
+                    <p></p>
+                    <p v-if="calendar.remainder != null && calendar.total!=0">
+                    <div v-if="calendar.remainder != 0">
+                        余{{ calendar.remainder }}
+                    </div>
+                   <div v-else>
+                        已约满
+                   </div>
+                    </p>
+                
+
+                </li>
+            </ul>
+        </section>
 
         <div class="bottom-btn">
             <div></div>
@@ -63,125 +78,102 @@
 </template>
 
 <script setup>
-import {ref, reactive} from 'vue';
+import { ref, reactive, toRefs } from 'vue';
 import { onMounted } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import { getSessionStorage, setSessionStorage } from "../common.js";
+const router = useRouter();
+//获取当前日期，年份，月份，日期
+const now = new Date();
+const currentYear = ref(now.getFullYear());
+const currentMonth = ref(now.getMonth() + 1);
+const currentDay = ref(now.getDate() + 1);
 
-        const now = new Date();
-        const currentYear = ref(now.getFullYear());
-        const currentMonth = ref(now.getMonth());
-        const currentDay = ref(26);
+const hospital = getSessionStorage('hospital');
+const setmeal = getSessionStorage('setMeal');
 
-        const actualMonth = ref(now.getMonth()) ;
-        const actualYear = ref(now.getFullYear());
-        const actualInMonth = ref(new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate());
-        const calendarDays = ref([]);
+const state = reactive({
+    hpId: hospital.hpId,
+    smId: setmeal.smId,
+    calendarArr: [],
+    selectedDate: null,//选中的日期  
+})
 
-        const generateCalendar = () => {
-            const firstDayOfMonth = new Date(currentYear.value, currentMonth.value, 1).getDay();
-            const daysInMonth = new Date(currentYear.value, currentMonth.value + 1, 0).getDate();
-            const daysInLastMonth = new Date(currentYear.value, currentMonth.value, 0).getDate();
-            
-            const days = [];
-
-            // Fill in days from the previous month
-            for (let i = firstDayOfMonth; i > 0; i--) {
-                days.push({
-                    date: daysInLastMonth - i + 1,
-                    isCurrentMonth: false,
-                    isToday: false,
-                    slots: 0
-                });
-            }
-
-            // Fill in days of the current month
-            for (let i = 1; i <= daysInMonth; i++) {
-                days.push({
-                    date: i,
-                    isCurrentMonth: true,
-                    isToday: isToday(i),
-                    slots: slot(i) // Random slots for demo purposes
-                });
-            }
-
-            // Fill in days from the next month to complete the last week
-            const remainingDays = 42 - days.length;
-            for (let i = 1; i <= remainingDays; i++) {
-                days.push({
-                    date: i,
-                    isCurrentMonth: false,
-                    isToday: false,
-                    slots: 0
-                });
-            }
-
-            calendarDays.value = days;
-        };
-        const slot = (i) => {
-        let a = currentYear.value-actualYear.value;
-        let b = currentMonth.value-actualMonth.value;
-        let c = currentDay.value;
-        if(a ===0){     
-              if(b===0)
-                {   
-                    if(i-c>=0&&i-c<7)
-                    return i;
-               
-                }
-                else if(b===1){
-                    c = c + 7 - actualInMonth.value;
-                    if(i<c)
-                    return i;
-                }
-            
-        }
-        else if(a===1)
-        {
-            b = b + 12;
-            if(b===1)
-            {
-                c = c + 7 - actualInMonth.value;
-                if(i<c)
-                return i;
-            }
-         
-            
-        }
-    
-
+const prevMonth = () => {
+    if (currentMonth.value === 1) {
+        currentMonth.value = 12;
+        currentYear.value--;
+    } else {
+        currentMonth.value--;
     }
+    generateCalendar();
+};
 
-        const isToday = (day) => {
-            const now = new Date();
-            return (
-                day === 26 &&
-                currentMonth.value === now.getMonth() &&
-                currentYear.value === now.getFullYear()
-            );
-        };
+const nextMonth = () => {
+    if (currentMonth.value === 12) {
+        currentMonth.value = 1;
+        currentYear.value++;
+    } else {
+        currentMonth.value++;
+    }
+    generateCalendar();
+};
 
-        const prevMonth = () => {
-            if (currentMonth.value === 0) {
-                currentMonth.value = 11;
-                currentYear.value--;
-            } else {
-                currentMonth.value--;
+const selectDay = (index) => {
+    if (state.calendarArr[index].remainder != null && state.calendarArr[index].remainder != 0) {
+        state.selectedDate = state.calendarArr[index].ymd;
+        for (let i = 0; i < state.calendarArr.length; i++) {
+            state.calendarArr[i].selectDay = 0;
+        }
+        state.calendarArr[index].selectDay = 1;
+    }
+};
+
+const getTodayDate = () => {
+    if (state.selectedDate == null) {
+        alert("请选择体检日期");
+        return;
+    }
+    setSessionStorage("selectedDate", state.selectedDate);
+    router.push('/confirmOrder');
+};
+
+const generateCalendar = () => {
+    axios({
+        method: 'post',
+        url: 'api/calendar/getCalendar',
+        data: {
+            hpId: hospital.hpId,
+            year: currentYear.value,
+            month: currentMonth.value
+        },
+    }).then((res) => {
+        if (res.data.code == 0) {
+            alert(res.data.message);
+            return;
+        }
+        state.calendarArr = res.data.data;
+        console.log(state.calendarArr);
+        for (let i = 0; i < state.calendarArr.length; i++) {
+            if (state.calendarArr[i].ymd != null) {
+                state.calendarArr[i].day = parseInt(
+                    state.calendarArr[i].ymd.substring(8));
+
+                if (state.calendarArr[i].ymd == state.selectedDate) {
+                    state.calendarArr[i].selectDay = 1;
+                }
+                else {
+                    state.calendarArr[i].selectDay = 0;
+                }
             }
-            generateCalendar();
-        };
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
+}
 
-        const nextMonth = () => {
-            if (currentMonth.value === 11) {
-                currentMonth.value = 0;
-                currentYear.value++;
-            } else {
-                currentMonth.value++;
-            }
-            generateCalendar();
-        };
-
-        onMounted(() => {
-            generateCalendar();
-        });
+generateCalendar();
 </script>
 
 <style scoped>
