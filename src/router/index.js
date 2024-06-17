@@ -2,14 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import index from '../views/Index.vue'
-import appointment from '../views/Appointment.vue'
-import hospital from '../views/Hospital.vue'
-import setmeal from '../views/SetMeal.vue'
-import selectdate from '../views/SelectDate.vue'
-import confirmorder from '../views/ConfirmOrder.vue'
-import appointmentsuccess from '../views/AppointmentSuccess.vue'
-import appointmentlist from '../views/AppointmentList.vue'
-import appointmentcancel from '../views/AppointmentCancel.vue'
+import Appointment from '../views/Appointment.vue'
+import Hospital from '../views/Hospital.vue'
+import SetMeal from '../views/SetMeal.vue'
+import SelectDate from '../views/SelectDate.vue'
+import ConfirmOrder from '../views/ConfirmOrder.vue'
+import AppointMentSuccess from '../views/AppointmentSuccess.vue'
+import AppointmentList from '../views/AppointmentList.vue'
+import AppointmentCancel from '../views/AppointmentCancel.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,42 +32,42 @@ const router = createRouter({
     {
       path: '/appointment',
       name: 'appointment',
-      component: appointment
+      component:Appointment
     },
     {
       path: '/hospital',
       name: 'hospital',
-      component: hospital
+      component: Hospital
     },
     {
       path: '/setmeal',
       name: 'setmeal',
-      component: setmeal
+      component: SetMeal
     },
     {
       path: '/selectdate',
       name: 'selectdate',
-      component: selectdate
+      component: SelectDate
     },
     {
       path: '/confirmorder',
       name: 'confirmorder',
-      component: confirmorder
+      component: ConfirmOrder
     },
     {
       path: '/appointmentsuccess',
       name: 'appointmentsuccess',
-      component: appointmentsuccess
+      component: AppointmentSuccess
     },
     {
       path: '/appointmentlist',
       name: 'appointmentlist',
-      component: appointmentlist
+      component: AppointmentList
     },
     {
       path: '/appointmentcancel',
       name: 'appointmentcancel',
-      component: appointmentcancel
+      component: AppointmentCancel
     }
 
   ]
