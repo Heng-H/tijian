@@ -29,7 +29,7 @@
                 <li v-for="(calendar, index) in state.calendarArr" :key="calendar.ymd">
                     <p :class="{
                         fontcolor: calendar.remainder != null && calendar.remainder != 0,
-                        pselect: calendar.selectDay == 1,
+                        pselect: calendar.selectDay == 1
                     }" @click="selectDay(index)">
                         {{ calendar.day }}
                     </p>
@@ -69,7 +69,7 @@ const router = useRouter();
 const now = new Date();
 const currentYear = ref(now.getFullYear());
 const currentMonth = ref(now.getMonth() + 1);
-const currentDay = ref(now.getDate() + 1);
+const currentDay = ref(now.getDate());
 
 const hospital = getSessionStorage('hospital');
 const setmeal = getSessionStorage('setMeal');
@@ -78,8 +78,10 @@ const state = reactive({
     hpId: hospital.hpId,
     smId: setmeal.smId,
     calendarArr: [],
-    selectedDate: null,//选中的日期  
+     selectedDate: `${currentYear.value}-${String(currentMonth.value).padStart(2, '0')}-${String(currentDay.value).padStart(2, '0')}`,//选中的日期  
 })
+
+
 
 const prevMonth = () => {
     if (currentMonth.value === 1) {
@@ -136,10 +138,14 @@ const generateCalendar = () => {
         }
         state.calendarArr = res.data.data;
         console.log(state.calendarArr);
+        console.log(state.selectedDate)
+
         for (let i = 0; i < state.calendarArr.length; i++) {
             if (state.calendarArr[i].ymd != null) {
                 state.calendarArr[i].day = parseInt(
                     state.calendarArr[i].ymd.substring(8));
+
+                console.log('ymd'+state.calendarArr[i].ymd);
 
                 if (state.calendarArr[i].ymd == state.selectedDate) {
                     state.calendarArr[i].selectDay = 1;
@@ -152,8 +158,9 @@ const generateCalendar = () => {
     }).catch((err) => {
         console.log(err);
     });
-}
 
+
+}
 generateCalendar();
 </script>
 
