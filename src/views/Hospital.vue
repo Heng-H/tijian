@@ -10,7 +10,7 @@
         </header>
         <div class="top-ban"></div>
         <ul class="hospital ">
-            <li v-for="hospital in hospitalList" :index="key">
+            <li v-for="(hospital,index) in hospitalList" :index="key">
                 <h3 @click="toSeal(hospital)">
                     {{ hospital.name }}
                     <i class="fa fa-angle-right"></i>
