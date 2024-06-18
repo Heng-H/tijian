@@ -14,16 +14,9 @@
                     <p>{{order.orderDate}} {{order.hospital.name}}</p>
                     <p @click="toAppiontment(index)">{{order.setMeal.name}}</p>
                 </div>
-                <div class="right" @click="toAppiontmentcancel(index)">
-                    取消预约
+                <div class="right">
+                     <el-button plain @click="toAppiontmentcancel(index)">取消预约</el-button>
                 </div>
-                <!-- <div class="left">
-                    <p>2022-03-22</p>
-                    <p>普通男士客户-基础套餐</p>
-                </div>
-                <div class="right" @click="toAppointmentcancel">
-                    取消预约
-                </div> -->
 
             </li>
         </ul>
@@ -39,21 +32,41 @@ import { reactive, toRefs,ref } from "vue";
 import { useRouter } from "vue-router";
 import { setSessionStorage,getSessionStorage} from "../common.js";
 import axios from "axios";
-
+import { ElMessage, ElMessageBox } from 'element-plus'
 const appointmentList=ref([
 ]);
 
 const router = useRouter();
 
 const toAppiontmentcancel = (index) => {
+    ElMessageBox.confirm(
+        '你确认要取消预约吗?',
+        {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+    ).then(() =>{
+        
     axios({
         method: "get" ,
-        url:"/api/orders/cancelOrder/"+appointmentList.value[index].orderId,
-        
+        url:"/api/orders/cancelOrder/"+appointmentList.value[index].orderId,    
     })
     .then(res => {
+        ElMessage({
+            type:'success',
+            message:'Delete'
+        });
+         router.push("/appointmentcancel")
     })
-    router.push("/appointmentcancel")
+    
+}).catch(()=>{
+    ElMessage({
+        type:'info',
+        message:'delete canceled'
+    })
+})
+
 };
 
 const toAppiontment = (index) => {
