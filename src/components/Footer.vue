@@ -2,7 +2,7 @@
     <!-- footer -->
     <footer>
             <ul>
-                <li onclick="location.href='index.html'">
+                <li @click="toIndex">
                     <i class="fa fa-home"></i>
             
                     <p>云医院</p>
@@ -17,7 +17,7 @@
                     <Discovery/>
                     <p>发现</p>
                 </li>
-                <li onclick="location.href='personal.html'">
+                <li @click="toMe">
                     <i class="fa fa-user"></i>
                     <Me/>
                     <p>我</p>
@@ -27,7 +27,23 @@
 </template>
 
 <script setup>
-    
+import Footer from '../components/Footer.vue';
+import { reactive, toRefs,ref } from "vue";
+import { useRouter } from "vue-router";
+import { setSessionStorage } from "../common.js";
+import axios from "axios";
+
+const router = useRouter();
+
+const toMe = () => {
+        router.push("/personal");
+};
+
+const toIndex = () => {
+        router.push("/index");
+};
+
+
 </script>
 
 <style scoped>

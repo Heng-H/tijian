@@ -11,6 +11,9 @@ import AppointMentSuccess from '../views/AppointmentSuccess.vue'
 import AppointmentList from '../views/AppointmentList.vue'
 import AppointmentCancel from '../views/AppointmentCancel.vue'
 import Order from '../views/Order.vue'
+import Personal from '../views/Personal.vue'
+import ReportList from '../views/ReportList.vue'
+import Report from '../views/Report.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -74,6 +77,21 @@ const router = createRouter({
       path: '/order',
       name: 'order',
       component: Order
+    },
+    {
+      path: '/personal',
+      name: 'personal',
+      component: Personal
+    },
+    {
+      path: '/reportlist',
+      name: 'reportlist',
+      component: ReportList
+    },
+    {
+      path: '/report',
+      name: 'report',
+      component: Report
     }
 
   ]
