@@ -1,6 +1,6 @@
 <template>
-     <!-- 总容器 -->
-     <div class="wrapper">
+    <!-- 总容器 -->
+    <div class="wrapper">
         <h1>体检预约-登录</h1>
         <section>
             <div class="input-box">
@@ -15,9 +15,10 @@
                 <p @click="toRegister">注册</p>
                 <p>忘记密码？</p>
             </div>
-            <div class="button-box" @click="login">登录</div>
+            <div class="button-box">
+                <el-button class="button-box" :plain="true" @click="login">登录</el-button>
+            </div>
         </section>
-
         <footer>
             <div>
                 <div class="line"></div>
@@ -26,30 +27,29 @@
             </div>
             <p>4008-XXX-XXX</p>
         </footer>
-    </div>   
+    </div>
 </template>
 
 <script setup>
-import { reactive, toRefs,ref } from "vue";
+import { reactive, toRefs, ref } from "vue";
 import { useRouter } from "vue-router";
 import { setSessionStorage } from "../common.js";
 import axios from "axios";
-
+import { ElMessage } from 'element-plus'
 const router = useRouter();
 
 const users = reactive({
-    userId:"",
-    password:""
+    userId: "",
+    password: ""
 
 });
-
 const login = () => {
-    if(users.userId == ""){
-        alert("请输入手机号");
+    if (users.userId == "") {
+        ElMessage("请输入手机号");
         return;
     }
-    if(users.password == ""){
-        alert("请输入密码");
+    if (users.password == "") {
+        ElMessage("请输入密码");
         return;
     }
     axios({
@@ -60,18 +60,23 @@ const login = () => {
             password: users.password
         }
     })
-    .then(res => {
-        if (res.data.code==1) {
-            let users = res.data.data;
-            setSessionStorage("users", users);
-            alert("登录成功");
-            router.push("/index");
-        } else {
-            alert(res.data.message);
-        }
-    })
-    .catch((error) => {
-          console.error(error);
+        .then(res => {
+            if (res.data.code == 1) {
+                let users = res.data.data;
+                setSessionStorage("users", users);
+                console.log(users);
+                ElMessage({
+                    message: "登录成功",
+                    type: "success"
+                })
+                router.push("/index");
+            } else {
+                console.log(res.data.message);
+                ElMessage.error(res.data.message);
+            }
+        })
+        .catch((error) => {
+            console.error(error);
         })
 }
 
@@ -83,15 +88,15 @@ const toRegister = () => {
 
 <style scoped>
 /*********************** 总容器 ***********************/
-.wrapper{
+.wrapper {
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(45deg,#266C9F,#266C9F,#7EB059);
+    background-image: linear-gradient(45deg, #266C9F, #266C9F, #7EB059);
     overflow: hidden;
 }
 
 /*********************** 标题部分 ***********************/
-h1{
+h1 {
     text-align: center;
     color: #FFF;
     font-size: 9.5vw;
@@ -101,7 +106,7 @@ h1{
 }
 
 /*********************** 内容部分 ***********************/
-section{
+section {
     width: 86vw;
     margin: 0 auto;
     background-color: #FFF;
@@ -111,7 +116,7 @@ section{
     padding: 6vw;
 }
 
-section .input-box{
+section .input-box {
     width: 100%;
     height: 12vw;
     border: solid 1px #CCC;
@@ -121,31 +126,34 @@ section .input-box{
     display: flex;
     align-items: center;
 }
-section .input-box i{
+
+section .input-box i {
     margin: 0 3.6vw;
     font-size: 5.4vw;
     color: #CCC;
 }
-section .input-box input{
+
+section .input-box input {
     border: none;
     outline: none;
 }
 
-section .reg-box{
+section .reg-box {
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin-top: 5vw;
     margin-bottom: 2vw;
 }
-section .reg-box p{
+
+section .reg-box p {
     font-size: 3.3vw;
     color: #2D727E;
     user-select: none;
     cursor: pointer;
 }
 
-section .button-box{
+section .button-box {
     width: 100%;
     height: 13vw;
     border-radius: 2vw;
@@ -162,25 +170,28 @@ section .button-box{
 }
 
 /*********************** footer部分 ***********************/
-footer{
+footer {
     width: 86vw;
     margin: 0 auto;
     margin-top: 72vw;
     font-size: 3.8vw;
     color: #FFF;
 }
-footer div{
+
+footer div {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-footer div .line{
+
+footer div .line {
     width: 22vw;
     height: 1px;
     background-color: #FFF;
 }
-footer > p{
+
+footer>p {
     text-align: center;
     margin-top: 2vw;
 }

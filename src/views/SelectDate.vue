@@ -59,6 +59,7 @@
 </template>
 
 <script setup>
+import Footer from '../components/Footer.vue';
 import { ref, reactive, toRefs } from 'vue';
 import { onMounted } from 'vue';
 import axios from 'axios';
