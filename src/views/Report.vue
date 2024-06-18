@@ -8,7 +8,7 @@
         </header>
 
         <nav>
-            <div :class="{ active: currentView === 'summary' }"  @click="switchView('summary')">总检结论</div>
+            <div :class="{ active: currentView === 'summary' }" @click="switchView('summary')">总检结论</div>
             <div :class="{ active: currentView === 'report' }" @click="switchView('report')">报告详情</div>
         </nav>
 
@@ -18,84 +18,66 @@
             <div class="item">
                 <div class="title">异常项</div>
                 <ul>
-                    <li>
+                    <li v-for="(item, index) in error" :key="index">
                         <div class="indications">
                             <div class="left">
                                 <div>异</div>
-                                <p>收缩压</p>
+                                <p>{{ item.name }}</p>
                             </div>
                             <div class="right">
-                                <p>149</p>
-                                <p>正常值范围：&lt;140</p>
+                                <p>{{ item.value }}</p>
+                                <p>正常值范围：{{ item.normalValueString }}</p>
                             </div>
                         </div>
                     </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <div>异</div>
-                                <p>白细胞计数</p>
-                            </div>
-                            <div class="right">
-                                <p>3.56 10^9/L</p>
-                                <p>正常值范围：4-10</p>
-                            </div>
-                        </div>
+                </ul>
+            </div>
+            <div class="item">
+                <div class="title">一、尊敬的顾客，您本次体检结论如下：</div>
+                <ul>
+                    <li class="conclusion-title" v-for="(item,index) in report.overallResults" :key="index">
+                        {{index+1}}、{{item.title}}
+                    </li>
+
+                </ul>
+            </div>
+            <div class="item">
+                <div class="title">二、尊敬的顾客，您本次体检建议信息日下：</div>
+                <ul>
+                    <li class="conclusion-content" v-for="(item,index) in report.overallResults" :key="index">
+                        <h3>{{index+1}}、{{item.title}}</h3>
+                        <p>
+                            {{ item.content }}
+                        </p>
                     </li>
                 </ul>
             </div>
 
         </div>
 
+
         <div class="nav-content-item" v-else-if="currentView === 'report'">
-            <div class="item">
-                <div class="title">一般检测</div>
-                <ul>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <div>异</div>
-                                <p>收缩压</p>
-                            </div>
-                            <div class="right">
-                                <p>149</p>
-                                <p>正常值范围：&lt;140</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>舒张压</p>
-                            </div>
-                            <div class="right">
-                                <p>90</p>
-                                <p>正常值范围：&lt;90</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>身高</p>
-                            </div>
-                            <div class="right">
-                                <p>177.00 cm</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="indications">
-                            <div class="left">
-                                <p>体重</p>
-                            </div>
-                            <div class="right">
-                                <p>80 kg</p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            <ul>
+                <li v-for="(item1, index) in report.reports" :key="index">
+                    <div class="item">
+                        <div class="title">{{ item1.ciName }}</div>
+                        <ul>
+                            <li v-for="(item2, index2) in item1.cidetailedReportList" :key="index2">
+                                <div class="indications">
+                                    <div class="left">
+                                        <div v-if="item2.isError === 1">异</div>
+                                        <p>{{ item2.name }}</p>
+                                    </div>
+                                    <div class="right">
+                                        <p>{{ item2.value }}</p>
+                                        <p>正常值范围：{{ item2.normalValueString }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
         </div>
 
         <div class="bottom-ban"></div>
@@ -107,45 +89,36 @@
 import Footer from '../components/Footer.vue';
 import { reactive, toRefs, ref } from "vue";
 import { useRouter } from "vue-router";
-import { setSessionStorage } from "../common.js";
+import { setSessionStorage, getSessionStorage } from "../common.js";
 import axios from "axios";
-
 
 const router = useRouter();
 
 const currentView = ref('summary');
 
+const report = getSessionStorage('report');
+const error = ref([]);
+
 const switchView = (view) => {
     currentView.value = view;
 }
 
-// window.onload = function () {
-//     //获取导航栏元素数组
-//     let navItemArr = document.getElementsByTagName('nav')[0].getElementsByTagName('div');
-//     //获取需要跟随导航切换的tab页面  
-//     let navContentItemArr = document.getElementsByClassName('nav-content-item');
+const getError = () => {
+    //遍历report
+    for (let i = 0,k=0; i < report.reports.length; i++) {
+        for (let j = 0; j < report.reports[i].cidetailedReportList.length; j++) {
+            if (report.reports[i].cidetailedReportList[j].isError === 1) {
+                error.value[k] = report.reports[i].cidetailedReportList[j];
+                k++;
+            }
+        }
+    }
+    console.log(error);
+}
 
-//     function work(index) {
-//         //重置初始状态
-//         for (let i = 0; i < navItemArr.length; i++) {
-//             navItemArr[i].style.borderBottom = 'none';
-//             navItemArr[i].style.color = '#555';
-//         }
-//         for (let i = 0; i < navContentItemArr.length; i++) {
-//             navContentItemArr[i].style.display = 'none';
-//         }
-//         navItemArr[index].style.borderBottom = 'solid 2px #137E92';
-//         navItemArr[index].style.color = '#137E92';
-//         navContentItemArr[index].style.display = 'block';
-//     }
-//     work(0);
+getError();
 
-//     for (let i = 0; i < navItemArr.length; i++) {
-//         navItemArr[i].onclick = function () {
-//             work(i);
-//         }
-//     }
-// }
+
 </script>
 
 <style scoped>

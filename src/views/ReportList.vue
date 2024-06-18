@@ -11,15 +11,15 @@
         <section>
             <img src="../assets/img/report.png">
             <ul>
-                <li>
+                <li v-for="(item,index) in reportList" :key="index">
                     <div class="left">
                         <i class="fa fa-file-text-o"></i>
                         <div>
-                            <p>2021年11月24日 体检报告</p>
-                            <p>沈阳世贸熙康健康管理中心</p>
+                            <p>{{ item.reportDate }} 体检报告</p>
+                            <p>{{ item.hpName }}</p>
                         </div>
                     </div>
-                    <div class="right" @click="toReport">
+                    <div class="right" @click="toReport(index)">
                         <i class="fa fa-angle-right"></i>
                     </div>
                 </li>
@@ -35,14 +35,38 @@
 import Footer from '../components/Footer.vue';
 import { reactive, toRefs,ref } from "vue";
 import { useRouter } from "vue-router";
-import { setSessionStorage } from "../common.js";
+import { getSessionStorage, setSessionStorage } from "../common.js";
 import axios from "axios";
 
 const router = useRouter();
 
-const toReport = () => {
+const reportList = ref([
+
+]);
+
+const toReport = (index) => {
+    setSessionStorage("report", reportList.value[index]);
     router.push("/report");
 };
+
+const init = () => {
+    axios({
+        method: "get",
+        url: "api/cireport/checkCireport/"+getSessionStorage("users").userId,
+        
+    }).then((res) => {
+        if(res.data.code == 1){
+            reportList.value = res.data.data;
+            console.log(res.data.data);
+        }
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+};
+
+init();
+
 </script>
 
 <style scoped>

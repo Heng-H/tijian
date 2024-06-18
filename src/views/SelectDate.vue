@@ -34,15 +34,14 @@
                         {{ calendar.day }}
                     </p>
                     <p></p>
-                    <p v-if="calendar.remainder != null && calendar.total!=0">
+                    <p v-if="calendar.remainder != null && calendar.total != 0">
                     <div v-if="calendar.remainder != 0">
                         余{{ calendar.remainder }}
                     </div>
-                   <div v-else>
+                    <div v-else>
                         已约满
-                   </div>
+                    </div>
                     </p>
-                
 
                 </li>
             </ul>
