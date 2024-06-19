@@ -64,10 +64,10 @@ const login = () => {
     })
         .then(res => {
             if (res.data.code == 1) {
-                 let users = res.data.data; 
+                 let users = res.data.data.user; 
                 //let users=res.data.data.users;
                 setLocalStorage("token",res.data.data.token);
-                setSessionStorage("users", users);
+                setSessionStorage("users",users);
                 console.log(users);
                 ElMessage({
                     message: "登录成功",

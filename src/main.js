@@ -39,12 +39,16 @@ axios.interceptors.response.use(res=>{
     {
       setSessionStorage('token',new_token);
     }   
-  if(res.data.code === 1)
+  if(res.data.code === 100)
         { 
          
             console.log('NIHAO');
-            // router.replace('/');
-            // removeLocalStorage('token')
+            router.replace('/');
+            //所有
+            removeLocalStorage('token');
+            sessionStorage.clear();
+
+
         }
         return res;
 })

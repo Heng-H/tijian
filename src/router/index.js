@@ -102,7 +102,7 @@ const router = createRouter({
 // 路由守卫
 // 1.判断是否登录
 router.beforeEach((to, from, next) => {
-  if (to.path === '/' || to.path === '/register' || to.path === '/index') {
+  if (to.path === '/' || to.path === '/register' || to.path === '/index' || to.path ==='/personal') {
     console.log('to.path不不不是哥们', to.path);
     next();
   } else {
