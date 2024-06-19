@@ -15,7 +15,9 @@
                     <p @click="toAppiontment(index)">{{order.setMeal.name}}</p>
                 </div>
                 <div class="right">
-                     <el-button plain @click="toAppiontmentcancel(index)">取消预约</el-button>
+                     <button v-if="order.state==1" @click="toAppiontmentcancel(index)">取消预约</button>
+                     <p v-else-if="order.state==0" style="color:red">已取消</p>
+                     <p v-else style="color: green;">已归档</p>
                 </div>
 
             </li>

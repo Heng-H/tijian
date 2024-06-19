@@ -53,7 +53,7 @@ import { useRouter } from "vue-router";
 import { setSessionStorage } from "../common.js";
 import axios from "axios";
 const sexMeal = ref(" ");
-const set_meal = ref(
+const set_meal1 = ref(
     [{
         smId: '',
         name: "",
@@ -67,6 +67,9 @@ const set_meal = ref(
             },
         ]
     }],
+)
+const set_meal = ref(
+    [],
 )
 
 

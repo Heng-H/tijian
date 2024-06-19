@@ -19,11 +19,7 @@
                             <p>{{ item.hpName }}</p>
                         </div>
                     </div>
-                    <div v-if="item.state==1" class="right" @click="toReport(index)">
-                        <!-- <i class="fa fa-angle-right"></i> -->
-                    </div>
-                    <div v-else class="right">
-                        已取消
+                    <div v-if="item.state==2" class="right" @click="toReport(index)">
                         <!-- <i class="fa fa-angle-right"></i> -->
                     </div>
                 </li>

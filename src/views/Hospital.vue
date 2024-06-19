@@ -9,7 +9,7 @@
             <div></div>
         </header>
         <div class="top-ban"></div>
-        <ul class="hospital ">
+        <ul class="hospital">
             <li v-for="(hospital,index) in hospitalList" :index="key">
                 <h3 @click="toSeal(hospital)">
                     {{ hospital.name }}
@@ -61,19 +61,10 @@ import { reactive, toRefs,ref } from "vue";
 import { useRouter } from "vue-router";
 import { setSessionStorage } from "../common.js";
 import axios from "axios";
-
+import { ElMessage } from 'element-plus'
 const router = useRouter();
 const hospitalList = ref([
-    {
-        hpid: "",
-        name: "",
-        picture:"",
-        telephone:"",
-        address:"",
-        businessHours:"",
-        deadline:"",
-        rule:"",
-    }
+
 ]);
 
 const toSeal = (hospital) => {
@@ -91,7 +82,7 @@ const init = () => {
         if (res.data.code === 1) {
             hospitalList.value = res.data.data;
         }else{
-            alert(res.data.message);
+            ElMessage.error(res.data.message);
         }
     }
     ).catch((err) => {

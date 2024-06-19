@@ -88,7 +88,7 @@ import { reactive, toRefs,ref } from "vue";
 import { useRouter } from "vue-router";
 import { setSessionStorage,getSessionStorage} from "../common.js";
 import axios from "axios";
-
+import { ElMessage } from 'element-plus'
 const router = useRouter();
 
 const users = getSessionStorage("users");
@@ -118,7 +118,7 @@ const appointmentsuccess = () => {
             router.push('/appointmentsuccess');
         }
         else{
-            alert(res.data.message);
+            ElMessage.error(res.data.message);
         }
     })
     .catch((err) => {
