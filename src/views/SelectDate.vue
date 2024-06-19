@@ -63,7 +63,7 @@ import { ref, reactive, toRefs } from 'vue';
 import { onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-import { getSessionStorage, setSessionStorage } from "../common.js";
+import { getSessionStorage, setSessionStorage ,getCurDate } from "../common.js";
 const router = useRouter();
 //获取当前日期，年份，月份，日期
 const now = new Date();
@@ -78,7 +78,7 @@ const state = reactive({
     hpId: hospital.hpId,
     smId: setmeal.smId,
     calendarArr: [],
-     selectedDate: `${currentYear.value}-${String(currentMonth.value).padStart(2, '0')}-${String(currentDay.value).padStart(2, '0')}`,//选中的日期  
+     selectedDate: getCurDate(),//选中的日期  
 })
 
 
@@ -111,6 +111,7 @@ const selectDay = (index) => {
         }
         state.calendarArr[index].selectDay = 1;
     }
+    console.log(state.selectedDate)
 };
 
 const getTodayDate = () => {
@@ -132,20 +133,16 @@ const generateCalendar = () => {
             month: currentMonth.value
         },
     }).then((res) => {
-        if (res.data.code == 0) {
+        if (res.data.code !== 1) {
             alert(res.data.message);
             return;
         }
         state.calendarArr = res.data.data;
-        console.log(state.calendarArr);
-        console.log(state.selectedDate)
 
         for (let i = 0; i < state.calendarArr.length; i++) {
             if (state.calendarArr[i].ymd != null) {
                 state.calendarArr[i].day = parseInt(
                     state.calendarArr[i].ymd.substring(8));
-
-                console.log('ymd'+state.calendarArr[i].ymd);
 
                 if (state.calendarArr[i].ymd == state.selectedDate) {
                     state.calendarArr[i].selectDay = 1;

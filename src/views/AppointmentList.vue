@@ -53,11 +53,16 @@ const toAppiontmentcancel = (index) => {
         url:"/api/orders/cancelOrder/"+appointmentList.value[index].orderId,    
     })
     .then(res => {
-        ElMessage({
-            type:'success',
-            message:'Delete'
-        });
-         router.push("/appointmentcancel")
+        if(res.data.code == 1){
+            ElMessage({
+                type:'success',
+                message:'Delete'
+            });
+            router.push("/appointmentcancel")
+        }
+        else{
+            alert(res.data.message);
+        }
     })
     
 }).catch(()=>{

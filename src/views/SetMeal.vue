@@ -86,10 +86,14 @@ const init = () => {
         }
     })
     .then(res => {
+        if(res.data.code == 1){
        set_meal.value = res.data.data;
        for(let i = 0; i < set_meal.value.length; i++) {
            set_meal.value[i].showContent = false;
        }
+    }else{
+        alert(res.data.message);
+    }
     })
     .catch((error) => {
         console.error(error);
