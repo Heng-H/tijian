@@ -19,8 +19,8 @@
                             <p>{{ item.hpName }}</p>
                         </div>
                     </div>
-                    <div v-if="item.state==2" class="right" @click="toReport(index)">
-                        <!-- <i class="fa fa-angle-right"></i> -->
+                    <div class="right" @click="toReport(index)">
+                        <i class="fa fa-angle-right"></i>
                     </div>
                 </li>
             </ul>

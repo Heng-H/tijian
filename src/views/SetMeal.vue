@@ -50,7 +50,7 @@
 import Footer from '../components/Footer.vue';
 import { reactive, toRefs, ref } from "vue";
 import { useRouter } from "vue-router";
-import { setSessionStorage } from "../common.js";
+import { getSessionStorage, setSessionStorage } from "../common.js";
 import axios from "axios";
 const sexMeal = ref(" ");
 const set_meal1 = ref(
@@ -79,7 +79,7 @@ const toggleContent = (index) => {
 }
 
 const init = () => {
-    sexMeal.value = JSON.parse(sessionStorage.getItem("users")).sex;
+    sexMeal.value =getSessionStorage("users").sex;
     console.log(sexMeal.value);
     axios({
         method: "get",

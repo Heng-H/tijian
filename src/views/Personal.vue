@@ -12,7 +12,7 @@
             <div class="info">
                 <div class="content">
                     <img src="../assets/img/user.png">
-                    <div v-if="user!=''">
+                    <div v-if="user">
                         <p>{{ user.realName }}</p>
                         <p>账号: {{ user.userId }}</p>
                     </div>
@@ -88,7 +88,7 @@
 import Footer from '../components/Footer.vue';
 import { reactive, toRefs,ref } from "vue";
 import { useRouter } from "vue-router";
-import { setSessionStorage ,getSessionStorage} from "../common.js";
+import { setSessionStorage ,getSessionStorage, removeSessionStorage, removeLocalStorage} from "../common.js";
 import axios from "axios";
 
 const router = useRouter();
@@ -96,7 +96,8 @@ const router = useRouter();
 const user = getSessionStorage("users");
 
 const exit = () => {
-    setSessionStorage("users","");
+    removeSessionStorage("users");
+    removeLocalStorage('token');
     router.push("/index");
 }
 

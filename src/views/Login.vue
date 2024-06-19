@@ -33,9 +33,9 @@
 <script setup>
 import { reactive, toRefs, ref } from "vue";
 import { useRouter } from "vue-router";
-import { setSessionStorage } from "../common.js";
+import { setLocalStorage, setSessionStorage,getLocalStorage,getSessionStorage } from "../common.js";
 import axios from "axios";
-import { ElMessage } from 'element-plus'
+import { ElMessage } from 'element-plus';
 const router = useRouter();
 
 const users = reactive({
@@ -55,14 +55,18 @@ const login = () => {
     axios({
         method: "post",
         url: "/api/users/login",
-        data: {
-            userId: users.userId,
-            password: users.password
-        }
+        data:{
+            userId:users.userId,
+            password:users.password
+        },
+        headers: 'Content-Type:application/json'
+
     })
         .then(res => {
             if (res.data.code == 1) {
-                let users = res.data.data;
+                 let users = res.data.data; 
+                //let users=res.data.data.users;
+                setLocalStorage("token",res.data.data.token);
                 setSessionStorage("users", users);
                 console.log(users);
                 ElMessage({
