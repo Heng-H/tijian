@@ -133,7 +133,7 @@ const generateCalendar = () => {
             month: currentMonth.value
         },
     }).then((res) => {
-        if (res.data.code == 0) {
+        if (res.data.code !== 1) {
             alert(res.data.message);
             return;
         }
