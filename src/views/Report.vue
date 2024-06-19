@@ -25,8 +25,8 @@
                                 <p>{{ item.name }}</p>
                             </div>
                             <div class="right">
-                                <p>{{ item.value }}</p>
-                                <p>正常值范围：{{ item.normalValueString }}</p>
+                                <p>{{ item.value }} {{ item.unit }}</p>
+                                <p v-if="item.normalValueString !== null">正常值范围：{{ item.normalValueString }}</p>
                             </div>
                         </div>
                     </li>
@@ -69,8 +69,8 @@
                                         <p>{{ item2.name }}</p>
                                     </div>
                                     <div class="right">
-                                        <p>{{ item2.value }}</p>
-                                        <p>正常值范围：{{ item2.normalValueString }}</p>
+                                        <p>{{ item2.value }} {{ item2.unit }}</p>
+                                        <p v-if="item2.normalValueString !== null">正常值范围：{{ item2.normalValueString }}</p>
                                     </div>
                                 </div>
                             </li>
