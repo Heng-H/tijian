@@ -127,12 +127,13 @@ const next = () => {
 
     axios({
         method: "post",
-        url: "/api/users/loginByCode",
+        url: "/api/users/updatePasswordOne",
         data: {
-            phone: form.phone,
+            userId: form.phone,
+        },
+        params: {
             code: form.code
         },
-        headers: 'Content-Type:application/json'
     })
         .then(res => {
             if (res.data.code == 1) {
@@ -140,7 +141,7 @@ const next = () => {
                     message: "验证成功",
                     type: "success"
                 })
-                step.value = 2;
+                step.value = 3;
             } else {
                 ElMessage.error(res.data.message);
             }
@@ -170,9 +171,9 @@ const update = () => {
 
     axios({
         method: "post",
-        url: "/api/users/updatePassword",
+        url: "/api/users/updatePasswordTwo",
         data: {
-            phone: form.phone,
+            userId: form.phone,
             password: form.password
         },
         headers: 'Content-Type:application/json'
@@ -198,8 +199,8 @@ const update = () => {
 const isCountingDown = ref(false);
 const isCountingDown1 = ref(false);
 //倒计时
-const countdown = ref('30');
-const countdown1 = ref('30');
+const countdown = ref('60');
+const countdown1 = ref('60');
 
 //忘记密码的发送验证码
 const sendCode = () => {
@@ -266,7 +267,7 @@ const send = () => {
 const startCountdown = () => {
     if (isCountingDown.value) return; // 如果已经在倒计时中，则不做任何操作
     isCountingDown.value = true;
-    countdown.value = '30'; // 重置倒计时秒数
+    countdown.value = '60'; // 重置倒计时秒数
     setInterval(() => {
         if (countdown.value > 0) {
             countdown.value -= 1;
@@ -280,7 +281,7 @@ const startCountdown = () => {
 const startCountdown1 = () => {
     if (isCountingDown1.value) return; // 如果已经在倒计时中，则不做任何操作
     isCountingDown1.value = true;
-    countdown1.value = '30'; // 重置倒计时秒数
+    countdown1.value = '60'; // 重置倒计时秒数
     setInterval(() => {
         if (countdown1.value > 0) {
             countdown1.value -= 1;

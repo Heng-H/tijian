@@ -101,7 +101,7 @@ const send=()=>{
 const startCountdown = () => {
     if (isCountingDown.value) return; // 如果已经在倒计时中，则不做任何操作
     isCountingDown.value = true;
-    countdown.value = '30'; // 重置倒计时秒数
+    countdown.value = '60'; // 重置倒计时秒数
     setInterval(() => {
         if (countdown.value > 0) {
             countdown.value -= 1;
