@@ -2,15 +2,30 @@
     <!-- 总容器 -->
     <div class="wrapper">
         <h1>体检预约-登录</h1>
+
+
         <section>
+            <div class="reg-box">
+                <p @click="toggleLoginMethod">
+                    {{ loginMethod === 'code' ? '验证码登录' : '密码登录' }}
+                </p>
+            </div>
             <div class="input-box">
                 <i class="fa fa-user-o"></i>
                 <input type="text" v-model="users.userId" placeholder="输入手机号">
             </div>
-            <div class="input-box">
+            <div v-if="loginMethod === 'password'" class="input-box">
                 <i class="fa fa-lock"></i>
                 <input type="password" v-model="users.password" placeholder="输入登录密码">
             </div>
+            <div v-else class="input-box">
+                <i class="fa fa-smile-o" aria-hidden="true"></i>
+                <input type="text" v-model="users.password" placeholder="输入验证码">
+                <span class="time" v-if="isCountingDown">{{ countdown }} 秒后重新发送</span>
+                <button class="send_code" v-else @click="startCountdown">发送验证码</button>
+            </div>
+
+
             <div class="reg-box">
                 <p @click="toRegister">注册</p>
                 <p>忘记密码？</p>
@@ -33,16 +48,65 @@
 <script setup>
 import { reactive, toRefs, ref } from "vue";
 import { useRouter } from "vue-router";
-import { setLocalStorage, setSessionStorage,getLocalStorage,getSessionStorage } from "../common.js";
+import { setLocalStorage, setSessionStorage, getLocalStorage, getSessionStorage } from "../common.js";
 import axios from "axios";
 import { ElMessage } from 'element-plus';
 const router = useRouter();
-
+//切换登录方式
+const loginMethod = ref('code');
+//隐藏发送验证码按钮
+const isSending = ref(true);
 const users = reactive({
     userId: "",
-    password: ""
-
+    password: "",
+    code: ""
 });
+
+const isCountingDown = ref(false);
+const countdown = ref('60');
+const startCountdown = () => {
+    if (isCountingDown.value) return; // 如果已经在倒计时中，则不做任何操作
+    isCountingDown.value = true;
+    countdown.value = '30'; // 重置倒计时秒数
+    setInterval(() => {
+        if (countdown.value > 0) {
+            countdown.value -= 1;
+        } else {
+            isCountingDown.value = false; // 倒计时结束
+            clearInterval(interval); // 清除定时器
+
+        }
+    }, 1000);
+
+
+    axios({
+        method: "post",
+        url: "/api/users/sendCode",
+        data: {
+            userId: users.userId
+        },
+        headers: 'Content-Type:application/json'
+    })
+        .then(res => {
+            if (res.data.code == 1) {
+                ElMessage({
+                    message: "发送成功",
+                    type: "success"
+                })
+            } else {
+                ElMessage.error(res.data.message);
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+}
+
+
+const toggleLoginMethod = () => {
+    console.log(loginMethod.value);
+    loginMethod.value = loginMethod.value === 'password' ? 'code' : 'password';
+}
 const login = () => {
     if (users.userId == "") {
         ElMessage("请输入手机号");
@@ -55,19 +119,19 @@ const login = () => {
     axios({
         method: "post",
         url: "/api/users/login",
-        data:{
-            userId:users.userId,
-            password:users.password
+        data: {
+            userId: users.userId,
+            password: users.password
         },
         headers: 'Content-Type:application/json'
 
     })
         .then(res => {
             if (res.data.code == 1) {
-                 let users = res.data.data.user; 
+                let users = res.data.data.user;
                 //let users=res.data.data.users;
-                setLocalStorage("token",res.data.data.token);
-                setSessionStorage("users",users);
+                setLocalStorage("token", res.data.data.token);
+                setSessionStorage("users", users);
                 console.log(users);
                 ElMessage({
                     message: "登录成功",
@@ -140,6 +204,8 @@ section .input-box i {
 section .input-box input {
     border: none;
     outline: none;
+    flex-grow: 1;
+    width: 90px;
 }
 
 section .reg-box {
@@ -171,6 +237,21 @@ section .button-box {
 
     user-select: none;
     cursor: pointer;
+}
+
+.send_code{
+    margin-right: 1vw;
+    font-size: 3.3vw;
+    cursor: pointer;
+    color: #409EFF;
+    padding: 0 0.1vw;
+}
+.time{
+    margin-right: 1vw;
+    font-size: 3.3vw;
+    cursor: pointer;
+    color: #409EFF;
+    padding: 0 0.1vw;
 }
 
 /*********************** footer部分 ***********************/
