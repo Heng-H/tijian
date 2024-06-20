@@ -37,10 +37,19 @@
                 <td>密码</td>
                 <td><input type="password" v-model="users.password" placeholder="请输入密码"></td>
             </tr>
+            
             <tr>
                 <td>确认密码</td>
                 <td><input type="password" v-model="users.repassword" placeholder="请再次输入密码"></td>
             </tr>
+
+            <tr>
+                <td>验证码</td>
+                <td><input type="text" v-model="users.code" placeholder="输入验证码">
+                <span class="time" v-if="isCountingDown">{{ countdown }} 秒后重新发送</span>
+                <button class="send_code" v-else @click="startCountdown">发送验证码</button></td>
+            </tr>
+            
         </table>
         <div class="btn" @click="register">完成</div>
     </div>
@@ -61,8 +70,49 @@ const users = reactive({
     sex: "1",
     identityCard: "",
     password: "",
-    repassword: ""
+    repassword: "",
+    code: ""
 });
+
+const isCountingDown = ref(false);
+const countdown = ref('60');
+const send=()=>{
+    axios({
+        method: "get",
+        url: "/api/users/sendCode",
+        params: {
+            phone: users.userId
+        },
+    })
+        .then(res => {
+            if (res.data.code == 1) {
+                ElMessage({
+                    message: "发送成功",
+                    type: "success"
+                })
+            } else {
+                ElMessage.error(res.data.message);
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+}
+const startCountdown = () => {
+    if (isCountingDown.value) return; // 如果已经在倒计时中，则不做任何操作
+    isCountingDown.value = true;
+    countdown.value = '30'; // 重置倒计时秒数
+    setInterval(() => {
+        if (countdown.value > 0) {
+            countdown.value -= 1;
+        } else {
+            isCountingDown.value = false; // 倒计时结束
+            clearInterval(interval); // 清除定时器
+
+        }
+    }, 1000);
+    send();
+}
 
 const register = () => {
    if(users.userId === "" || users.realName === "" || users.birthday === "" || users.identityCard === "" || users.password === "" || users.repassword === "") {
@@ -73,11 +123,15 @@ const register = () => {
         alert("两次密码输入不一致");
         return;
     }
+    if(users.code === "") {
+        alert("请输入验证码");
+        return;
+    }
     axios({
         method: "post",
         url: "/api/users/register",
         data: users,
-        
+        params: { code: users.code } 
     })
         .then(res => {
             let users = res.data.data;
@@ -99,6 +153,22 @@ const register = () => {
 .wrapper {
     width: 100%;
     height: 100%;
+}
+
+.send_code{
+    margin-right: 1vw;
+    font-size: 3.3vw;
+    cursor: pointer;
+    color: #409EFF;
+    padding: 0 0.1vw;
+}
+
+.time{
+    margin-right: 1vw;
+    font-size: 3.3vw;
+    cursor: pointer;
+    color: #409EFF;
+    padding: 0 0.1vw;
 }
 
 /*********************** header ***********************/
@@ -151,11 +221,14 @@ table {
 table tr td {
     height: 12vw;
     border-bottom: solid 1px #DDD;
+    width: 50px;
 }
 
 table tr td input {
     border: none;
     outline: none;
+    flex-grow: 1;
+    width: 160px;
 }
 
 /*********************** btn ***********************/

@@ -20,7 +20,7 @@
             </div>
             <div v-else class="input-box">
                 <i class="fa fa-smile-o" aria-hidden="true"></i>
-                <input type="text" v-model="users.password" placeholder="输入验证码">
+                <input type="text" v-model="users.code" placeholder="输入验证码">
                 <span class="time" v-if="isCountingDown">{{ countdown }} 秒后重新发送</span>
                 <button class="send_code" v-else @click="startCountdown">发送验证码</button>
             </div>
@@ -31,7 +31,8 @@
                 <p>忘记密码？</p>
             </div>
             <div class="button-box">
-                <el-button class="button-box" :plain="true" @click="login">登录</el-button>
+                <el-button v-if="loginMethod === 'password'" class="button-box" :plain="true" @click="login">登录</el-button>
+                <el-button v-else class="button-box" :plain="true" @click="codeLogin">登录</el-button>
             </div>
         </section>
         <footer>
@@ -64,28 +65,14 @@ const users = reactive({
 
 const isCountingDown = ref(false);
 const countdown = ref('60');
-const startCountdown = () => {
-    if (isCountingDown.value) return; // 如果已经在倒计时中，则不做任何操作
-    isCountingDown.value = true;
-    countdown.value = '30'; // 重置倒计时秒数
-    setInterval(() => {
-        if (countdown.value > 0) {
-            countdown.value -= 1;
-        } else {
-            isCountingDown.value = false; // 倒计时结束
-            clearInterval(interval); // 清除定时器
 
-        }
-    }, 1000);
-
-
+const send=()=>{
     axios({
-        method: "post",
+        method: "get",
         url: "/api/users/sendCode",
-        data: {
-            userId: users.userId
+        params: {
+            phone: users.userId
         },
-        headers: 'Content-Type:application/json'
     })
         .then(res => {
             if (res.data.code == 1) {
@@ -100,6 +87,22 @@ const startCountdown = () => {
         .catch((error) => {
             console.error(error);
         })
+}
+
+const startCountdown = () => {
+    if (isCountingDown.value) return; // 如果已经在倒计时中，则不做任何操作
+    isCountingDown.value = true;
+    countdown.value = '30'; // 重置倒计时秒数
+    setInterval(() => {
+        if (countdown.value > 0) {
+            countdown.value -= 1;
+        } else {
+            isCountingDown.value = false; // 倒计时结束
+            clearInterval(interval); // 清除定时器
+
+        }
+    }, 1000);
+    send();
 }
 
 
@@ -121,10 +124,50 @@ const login = () => {
         url: "/api/users/login",
         data: {
             userId: users.userId,
-            password: users.password
+            code: users.code
         },
         headers: 'Content-Type:application/json'
 
+    })
+        .then(res => {
+            if (res.data.code == 1) {
+                let users = res.data.data.user;
+                //let users=res.data.data.users;
+                setLocalStorage("token", res.data.data.token);
+                setSessionStorage("users", users);
+                console.log(users);
+                ElMessage({
+                    message: "登录成功",
+                    type: "success"
+                })
+                router.push("/index");
+            } else {
+                console.log(res.data.message);
+                ElMessage.error(res.data.message);
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+}
+
+const codeLogin = () => {
+    if (users.userId == "") {
+        ElMessage("请输入手机号");
+        return;
+    }
+    if (users.code == "") {
+        ElMessage("请输入验证码");
+        return;
+    }
+    axios({
+        method: "post",
+        url: "/api/users/loginByCode",
+        data: {
+            userId: users.userId,
+            code: users.code
+        },
+        headers: 'Content-Type:application/x-www-form-urlencoded'
     })
         .then(res => {
             if (res.data.code == 1) {

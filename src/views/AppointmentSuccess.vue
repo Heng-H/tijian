@@ -48,8 +48,27 @@ const toAppointment = () => {
 const toAppointmentlist = () => {
     router.push("/appointmentlist")
 }
+// //发送短信到手机
+// const init=()=>{
+//     let userId=getSessionStorage('user').userId;
+//     axios({
+//         method: 'get',
+//         url: 'api/users/getUserInfo',
+//         params: {
+//             userId:userId
+//         }
+//     }).then((res) => {
+//         if(res.data.code==1)
+//         alert('短信已发送至您的手机，请注意查收！')
+//     else{
+//         console.log(res.data.message);
+//     }
+//     }).catch((err) => {
+//         console.log(err);
+//     })
+// }
 
-
+// init();
 
 </script>
 
