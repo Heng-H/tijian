@@ -204,19 +204,21 @@ const countdown1 = ref('60');
 
 //忘记密码的发送验证码
 const sendCode = () => {
-
+    console.log('Request Parameters:', { phone: form.phone, type: 1 });
     if(form.phone==""){
         console.log(form.phone)
         ElMessage.error("请输入手机号");
         return;
     }
     axios({
-        method: "get",
-        url: "/api/users/sendCode",
-        params: {
-            phone: form.phone
-        },
-    })
+    method: "get",
+    url: "/api/users/sendCode",
+    params: {  
+        phone: form.phone,
+        type: 1
+    }
+    
+})
         .then(res => {
             if (res.data.code == 1) {
                 ElMessage({
@@ -244,7 +246,8 @@ const send = () => {
         method: "get",
         url: "/api/users/sendCode",
         params: {
-            phone: users.userId
+            phone: users.userId,
+            type: 2
         },
     })
         .then(res => {

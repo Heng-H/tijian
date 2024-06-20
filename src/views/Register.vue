@@ -81,7 +81,8 @@ const send=()=>{
         method: "get",
         url: "/api/users/sendCode",
         params: {
-            phone: users.userId
+            phone: users.userId,
+            type:1
         },
     })
         .then(res => {
