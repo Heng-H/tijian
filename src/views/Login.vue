@@ -49,7 +49,7 @@
         <el-dialog v-model="dialogFormVisible" title="忘记密码" width="300">
             <el-form :model="form">
                 <el-form-item label="手机号码：" label-width="100px">
-                    <el-input v-model="form.phone" autocomplete="off" />
+                    <el-input :disabled="step!==1" v-model="form.phone" autocomplete="off" />
                 </el-form-item>
                 <el-form-item v-if="step === 2" label="验证码：" label-width="100px">
                     <el-input v-model="form.code" autocomplete="off" />
