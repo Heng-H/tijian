@@ -56,6 +56,7 @@ const toAppiontmentcancel = (index) => {
     })
     .then(res => {
         if(res.data.code == 1){
+            refund(appointmentList.value[index].orderId);
             ElMessage({
                 type:'success',
                 message:'Delete'
@@ -75,7 +76,28 @@ const toAppiontmentcancel = (index) => {
 })
 
 };
-
+const refund=(orderId)=>{
+    axios({
+        method: "get" ,
+        url:"/api/pay/refund",
+        params:{
+            orderId:orderId
+        }    
+    }).then(res => {
+        if(res.data.code == 1){
+            ElMessage({
+                type:'success',
+                message:'退款成功'
+            });
+        }
+        else{
+            alert(res.data.message);
+        }
+    })
+    .catch(err => {
+        alert(err);
+    });
+}
 const toAppiontment = (index) => {
     setSessionStorage("order",appointmentList.value[index])
     router.push("/order")
