@@ -35,12 +35,20 @@ import { useRouter } from "vue-router";
 import { setSessionStorage,getSessionStorage} from "../common.js";
 import axios from "axios";
 import { ElMessage, ElMessageBox } from 'element-plus'
+
 const appointmentList=ref([
 ]);
 
 const router = useRouter();
-
+const currentDate = new Date();
 const toAppiontmentcancel = (index) => {
+    if(new Date(appointmentList.value[index].orderDate)<=currentDate){
+        ElMessage({
+            type:'info',
+            message:'不能取消当天及以后的预约'
+            })
+            return;
+    }
     ElMessageBox.confirm(
         '你确认要取消预约吗?',
         {
