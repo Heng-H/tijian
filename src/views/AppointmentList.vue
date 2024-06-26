@@ -45,7 +45,7 @@ const toAppiontmentcancel = (index) => {
     if(new Date(appointmentList.value[index].orderDate)<=currentDate){
         ElMessage({
             type:'info',
-            message:'不能取消当天及以后的预约'
+            message:'不能取消当天及之前的预约'
             })
             return;
     }
