@@ -46,7 +46,7 @@
             <p>4008-XXX-XXX</p>
         </footer>
 
-        <el-dialog v-model="dialogFormVisible" title="忘记密码" width="300">
+        <el-dialog v-model="dialogFormVisible" title="忘记密码" width="300" @close="canel">
             <el-form :model="form">
                 <el-form-item label="手机号码：" label-width="100px">
                     <el-input :disabled="step!==1" v-model="form.phone" autocomplete="off" />
@@ -270,8 +270,8 @@ const send = () => {
 const startCountdown = () => {
     if (isCountingDown.value) return; // 如果已经在倒计时中，则不做任何操作
     isCountingDown.value = true;
-    countdown.value = '60'; // 重置倒计时秒数
-    setInterval(() => {
+    countdown.value = '10'; // 重置倒计时秒数
+    const interval=setInterval(() => {
         if (countdown.value > 0) {
             countdown.value -= 1;
         } else {
@@ -285,7 +285,7 @@ const startCountdown1 = () => {
     if (isCountingDown1.value) return; // 如果已经在倒计时中，则不做任何操作
     isCountingDown1.value = true;
     countdown1.value = '60'; // 重置倒计时秒数
-    setInterval(() => {
+    const interval=setInterval(() => {
         if (countdown1.value > 0) {
             countdown1.value -= 1;
         } else {
