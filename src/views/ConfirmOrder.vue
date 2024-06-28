@@ -80,6 +80,7 @@
         <div class="bottom-ban"></div>
         <Footer></Footer>
     </div>
+    <div ref="htmlContent"></div>
 </template>
 
 <script setup>
@@ -105,7 +106,31 @@ const order = reactive({
     smId: setMeal.smId,
     userId: users.userId,
 });
-
+const htmlContent = ref();
+const pay=(userId,orderId)=>
+{
+    let price = setMeal.price;
+    axios(
+        {
+            method: "get",
+            url: "/api/pay/alipay",
+            params:{
+                orderId: orderId,
+                price: price
+            },
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+        }
+    }
+    ).then(res=>
+    {
+            htmlContent.value.innerHTML = res.data;
+            console.log(htmlContent.value);
+            window.document.forms[0].submit();
+    }
+    )
+    
+}
 const appointmentsuccess = () => {
     console.log(order.orderDate);
     axios({
@@ -115,7 +140,8 @@ const appointmentsuccess = () => {
     })
     .then((res) => {
         if(res.data.code == 1){
-            router.push('/appointmentsuccess');
+            pay(order.userId,res.data.data.orderId);
+            // router.push('/appointmentsuccess');
         }
         else{
             ElMessage.error(res.data.message);

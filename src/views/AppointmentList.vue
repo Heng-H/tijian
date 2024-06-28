@@ -35,12 +35,20 @@ import { useRouter } from "vue-router";
 import { setSessionStorage,getSessionStorage} from "../common.js";
 import axios from "axios";
 import { ElMessage, ElMessageBox } from 'element-plus'
+
 const appointmentList=ref([
 ]);
 
 const router = useRouter();
-
+const currentDate = new Date();
 const toAppiontmentcancel = (index) => {
+    if(new Date(appointmentList.value[index].orderDate)<=currentDate){
+        ElMessage({
+            type:'info',
+            message:'不能取消当天及之前的预约'
+            })
+            return;
+    }
     ElMessageBox.confirm(
         '你确认要取消预约吗?',
         {
@@ -56,6 +64,7 @@ const toAppiontmentcancel = (index) => {
     })
     .then(res => {
         if(res.data.code == 1){
+            refund(appointmentList.value[index].orderId);
             ElMessage({
                 type:'success',
                 message:'Delete'
@@ -75,7 +84,28 @@ const toAppiontmentcancel = (index) => {
 })
 
 };
-
+const refund=(orderId)=>{
+    axios({
+        method: "get" ,
+        url:"/api/pay/refund",
+        params:{
+            orderId:orderId
+        }    
+    }).then(res => {
+        if(res.data.code == 1){
+            ElMessage({
+                type:'success',
+                message:'退款成功'
+            });
+        }
+        else{
+            alert(res.data.message);
+        }
+    })
+    .catch(err => {
+        alert(err);
+    });
+}
 const toAppiontment = (index) => {
     setSessionStorage("order",appointmentList.value[index])
     router.push("/order")

@@ -46,7 +46,7 @@
             <p>4008-XXX-XXX</p>
         </footer>
 
-        <el-dialog v-model="dialogFormVisible" title="忘记密码" width="300">
+        <el-dialog v-model="dialogFormVisible" title="忘记密码" width="300" @close="canel">
             <el-form :model="form">
                 <el-form-item label="手机号码：" label-width="100px">
                     <el-input :disabled="step!==1" v-model="form.phone" autocomplete="off" />
@@ -127,12 +127,13 @@ const next = () => {
 
     axios({
         method: "post",
-        url: "/api/users/loginByCode",
+        url: "/api/users/updatePasswordOne",
         data: {
-            phone: form.phone,
+            userId: form.phone,
+        },
+        params: {
             code: form.code
         },
-        headers: 'Content-Type:application/json'
     })
         .then(res => {
             if (res.data.code == 1) {
@@ -140,7 +141,7 @@ const next = () => {
                     message: "验证成功",
                     type: "success"
                 })
-                step.value = 2;
+                step.value = 3;
             } else {
                 ElMessage.error(res.data.message);
             }
@@ -170,9 +171,9 @@ const update = () => {
 
     axios({
         method: "post",
-        url: "/api/users/updatePassword",
+        url: "/api/users/updatePasswordTwo",
         data: {
-            phone: form.phone,
+            userId: form.phone,
             password: form.password
         },
         headers: 'Content-Type:application/json'
@@ -198,24 +199,26 @@ const update = () => {
 const isCountingDown = ref(false);
 const isCountingDown1 = ref(false);
 //倒计时
-const countdown = ref('30');
-const countdown1 = ref('30');
+const countdown = ref('60');
+const countdown1 = ref('60');
 
 //忘记密码的发送验证码
 const sendCode = () => {
-
+    console.log('Request Parameters:', { phone: form.phone, type: 1 });
     if(form.phone==""){
         console.log(form.phone)
         ElMessage.error("请输入手机号");
         return;
     }
     axios({
-        method: "get",
-        url: "/api/users/sendCode",
-        params: {
-            phone: form.phone
-        },
-    })
+    method: "get",
+    url: "/api/users/sendCode",
+    params: {  
+        phone: form.phone,
+        type: 1
+    }
+    
+})
         .then(res => {
             if (res.data.code == 1) {
                 ElMessage({
@@ -243,7 +246,8 @@ const send = () => {
         method: "get",
         url: "/api/users/sendCode",
         params: {
-            phone: users.userId
+            phone: users.userId,
+            type: 2
         },
     })
         .then(res => {
@@ -266,8 +270,8 @@ const send = () => {
 const startCountdown = () => {
     if (isCountingDown.value) return; // 如果已经在倒计时中，则不做任何操作
     isCountingDown.value = true;
-    countdown.value = '30'; // 重置倒计时秒数
-    setInterval(() => {
+    countdown.value = '10'; // 重置倒计时秒数
+    const interval=setInterval(() => {
         if (countdown.value > 0) {
             countdown.value -= 1;
         } else {
@@ -280,8 +284,8 @@ const startCountdown = () => {
 const startCountdown1 = () => {
     if (isCountingDown1.value) return; // 如果已经在倒计时中，则不做任何操作
     isCountingDown1.value = true;
-    countdown1.value = '30'; // 重置倒计时秒数
-    setInterval(() => {
+    countdown1.value = '60'; // 重置倒计时秒数
+    const interval=setInterval(() => {
         if (countdown1.value > 0) {
             countdown1.value -= 1;
         } else {
