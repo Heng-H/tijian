@@ -15,7 +15,7 @@ import Personal from '../views/Personal.vue'
 import ReportList from '../views/ReportList.vue'
 import Report from '../views/Report.vue'
 import { getLocalStorage } from '@/common'
-
+import Ai from '../views/Ai.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -93,6 +93,11 @@ const router = createRouter({
       path: '/report',
       name: 'report',
       component: Report
+    },
+    {
+      path:'/ai',
+      name:'ai',
+      component:Ai
     }
 
   ]

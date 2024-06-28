@@ -31,7 +31,7 @@
         <li>
             <img src="../assets/img/menu02.png">
             <div class="nav-item-text">
-                <h3>网络问诊</h3>
+                <h3 @click="toAi">ai问诊</h3>
                 <p>图文视频网络咨询</p>
             </div>
         </li>
@@ -198,7 +198,9 @@ const toReportList = () => {
     router.push("/reportList")
 };
 
-
+const toAi = () => {
+    router.push("/ai")
+};
 
 
 </script>
